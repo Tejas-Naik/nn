@@ -10,7 +10,7 @@ const HomeCollectionSection = () => {
         </h2>
       </div>
       <ProductGridWrapper limit={6}>
-        <ProductGrid />
+        <ProductGrid products={[]} onAddToCart={() => {}} />
       </ProductGridWrapper>
     </div>
   );

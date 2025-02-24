@@ -31,7 +31,7 @@ const Search = () => {
       </Form>
 
       <ProductGridWrapper searchQuery={searchParams.get("query")!} page={currentPage}>
-        <ProductGrid />
+        <ProductGrid products={[]} onAddToCart={() => {}} />
       </ProductGridWrapper>
 
       <ShowingSearchPagination page={currentPage} setCurrentPage={setCurrentPage} />
