@@ -20,8 +20,8 @@ const ProductGridWrapper = ({
   page?: number;
   limit?: number;
   children:
-    | ReactElement<{ products: Product[] }>
-    | ReactElement<{ products: Product[] }>[];
+    | ReactElement<{ products: Product[]; onAddToCart: (product: Product) => void }>
+    | ReactElement<{ products: Product[]; onAddToCart: (product: Product) => void }>[];
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const { totalProducts } = useAppSelector((state) => state.shop);
@@ -93,19 +93,20 @@ const ProductGridWrapper = ({
     getSearchedProducts(searchQuery || "", sortCriteria || "", page || 1);
   }, [searchQuery, sortCriteria, page]);
 
+  const handleAddToCart = useCallback((product: Product) => {
+    // Add to cart logic here
+    console.log("Adding to cart:", product);
+  }, []);
+
   // Clone the children and pass the products as props to the children
   // This will cause the children to re-render with the new products
   // Also it will cause many re-renders if the children are not memoized
   // So I memoized the ProductGrid component
-  const childrenWithProps = React.Children.map(children, (child) => {
-    // Checking isValidElement is the safe way and avoids a
-    // typescript error too.
-    if (React.isValidElement(child) && products.length > 0) {
-      return React.cloneElement(child, { products: products });
-    }
-    return null;
+  return React.Children.map(children, (child) => {
+    return React.cloneElement(child, {
+      products,
+      onAddToCart: handleAddToCart,
+    });
   });
-
-  return childrenWithProps;
 };
 export default ProductGridWrapper;
